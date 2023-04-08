@@ -4613,7 +4613,7 @@
 				</xsl:choose>
 				<xsl:choose>
 					<xsl:when test="($cVolume!=0 or $cIssue!=0) and $cPages!=0">
-						<xsl:call-template name ="templ_prop_ListSeparator"/>
+						<xsl:text>: </xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:call-template name = "templ_prop_Dot"/>
@@ -4645,7 +4645,7 @@
 				</xsl:choose>
 				<xsl:choose>
 					<xsl:when test="$cPages!=0">
-						<xsl:call-template name ="templ_prop_ListSeparator"/>
+						<xsl:text>: </xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:call-template name = "templ_prop_Dot"/>
@@ -4659,7 +4659,7 @@
 					<xsl:value-of select="b:Issue"/>
 					<xsl:choose>
 						<xsl:when test="$cPages!=0">
-							<xsl:call-template name ="templ_prop_ListSeparator"/>
+							<xsl:text>: </xsl:text>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:call-template name = "templ_prop_Dot"/>
@@ -4746,6 +4746,21 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template name="BibDisplayTitleJA">
+		<xsl:variable name="cTitle">
+			<xsl:value-of select="count(b:Title)"/>
+		</xsl:variable>
+		<xsl:if test ="$cTitle!=0">
+			<xsl:text>'</xsl:text>
+			<xsl:call-template name="right-trim">
+				<xsl:with-param name ="s" select="b:Title"/>
+			</xsl:call-template>
+			<xsl:text>'</xsl:text>
+			<xsl:call-template name ="templ_prop_ListSeparator"/>
+			<xsl:call-template name ="templ_prop_Space"/>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template name="BibDisplayTitleInt">
 		<xsl:variable name="cTitle">
 			<xsl:value-of select="count(b:Title)"/>
@@ -4814,7 +4829,9 @@
 		</xsl:variable>
 
 		<xsl:if test ="$cJournalName!=0">
-			<xsl:value-of select="b:JournalName"/>
+			<i>
+				<xsl:value-of select="b:JournalName"/>
+			</i>
 			<xsl:choose>
 				<xsl:when test="$cMonth!=0 or $cPages!=0 or $cVolume!=0 or $cIssue!=0">
 					<xsl:call-template name ="templ_prop_ListSeparator"/>
@@ -4898,9 +4915,7 @@
 			<xsl:value-of select="b:Pages"/>
 		</xsl:variable>
 		<xsl:if test ="$cPages!=0">
-			<xsl:call-template name ="DisplayPageOrPages">
-				<xsl:with-param name="pages" select ="$pages"/>
-			</xsl:call-template>
+			<xsl:value-of select="b:Pages"/>
 			<xsl:call-template name ="templ_prop_Dot"/>
 		</xsl:if>
 	</xsl:template>
@@ -5281,10 +5296,8 @@
 							<xsl:with-param name ="DisplayEditorIfAuthorUnavailale" select="'true'" />
 						</xsl:call-template>
 						<xsl:call-template name = "BibDisplayYear"/>
-						<xsl:call-template name = "BibDisplayTitle"/>
-						<i>
-							<xsl:call-template name ="BibDisplayJournalName"/>
-						</i>
+						<xsl:call-template name = "BibDisplayTitleJA"/>
+						<xsl:call-template name ="BibDisplayJournalName"/>
 						<xsl:call-template name ="BibDisplayVolumeIssueJA"/>
 						<xsl:call-template name ="BibDisplayPages"/>
 					</xsl:element>
