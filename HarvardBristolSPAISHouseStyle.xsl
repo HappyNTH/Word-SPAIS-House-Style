@@ -1986,26 +1986,6 @@
 		</xsl:attribute>
 	</xsl:template>
 
-	<xsl:template name ="BibDisplayStrOnline">
-		<xsl:variable name="cURL">
-			<xsl:value-of select="count(b:URL)"/>
-		</xsl:variable>
-		<xsl:variable name="cYearAccessed">
-			<xsl:value-of select="count(b:YearAccessed)"/>
-		</xsl:variable>
-		<xsl:call-template name ="templ_prop_SecondaryOpen"/>
-		<xsl:call-template name ="templ_str_OnlineCap"/>
-		<xsl:call-template name ="templ_prop_SecondaryClose"/>
-		<xsl:choose>
-			<xsl:when test="$cURL!=0 or $cYearAccessed!=0">
-				<xsl:call-template name ="templ_prop_Space"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name ="templ_prop_Dot"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
 	<xsl:template name ="BibDisplayStrFilm">
 		<xsl:call-template name ="templ_prop_SecondaryOpen"/>
 		<xsl:call-template name ="templ_str_Film"/>
@@ -4745,8 +4725,8 @@
 			<xsl:call-template name ="templ_prop_Space"/>
 		</xsl:if>
 	</xsl:template>
-
-	<xsl:template name="BibDisplayTitleJA">
+	
+	<xsl:template name="BibDisplayTitleJournoOrWeb">
 		<xsl:variable name="cTitle">
 			<xsl:value-of select="count(b:Title)"/>
 		</xsl:variable>
@@ -5074,82 +5054,72 @@
 		</xsl:variable>
 
 		<xsl:if test ="$cYearAccessed!=0">
-			<br>
-				<xsl:variable name ="str_AccessedCap">
-					<xsl:call-template name ="templ_str_AccessedCap"/>
-				</xsl:variable>
-				<xsl:variable name ="prop_Space">
-					<xsl:call-template name ="templ_prop_Space"/>
-				</xsl:variable>
-				<xsl:choose>
-					<xsl:when test="$cDayAccessed!=0">
-						<xsl:choose>
-							<xsl:when test="$cMonthAccessed!=0">
-								<xsl:if test ="$cYearAccessed!=0">
-									<xsl:call-template name ="templ_prop_Space"/>
-									<xsl:call-template name ="templ_prop_SecondaryOpen"/>
-									<xsl:call-template name ="FindReplaceString">
-										<xsl:with-param name="originalString" select="string($str_AccessedCap)"/>
-										<xsl:with-param name="stringToBeReplaced" select="' %1'"/>
-										<xsl:with-param name="stringReplacement" select="$prop_Space"/>
-									</xsl:call-template>
-									<xsl:value-of select="b:DayAccessed"/>
-									<xsl:call-template name ="templ_prop_Space"/>
-									<xsl:value-of select="b:MonthAccessed"/>
-									<xsl:call-template name ="templ_prop_Space"/>
-									<xsl:value-of select="b:YearAccessed"/>
-									<xsl:call-template name ="templ_prop_SecondaryClose"/>
-									<xsl:call-template name ="templ_prop_Dot"/>
-								</xsl:if>
-							</xsl:when>
-							<xsl:otherwise>
+			<xsl:variable name ="str_AccessedCap">
+				<xsl:text>accessed </xsl:text>
+			</xsl:variable>
+			<xsl:variable name ="prop_Space">
+				<xsl:call-template name ="templ_prop_Space"/>
+			</xsl:variable>
+			<xsl:choose>
+				<xsl:when test="$cDayAccessed!=0">
+					<xsl:choose>
+						<xsl:when test="$cMonthAccessed!=0">
+							<xsl:if test ="$cYearAccessed!=0">
 								<xsl:call-template name ="templ_prop_Space"/>
-								<xsl:call-template name ="templ_prop_SecondaryOpen"/>
 								<xsl:call-template name ="FindReplaceString">
 									<xsl:with-param name="originalString" select="string($str_AccessedCap)"/>
 									<xsl:with-param name="stringToBeReplaced" select="' %1'"/>
 									<xsl:with-param name="stringReplacement" select="$prop_Space"/>
 								</xsl:call-template>
-								<xsl:value-of select="b:YearAccessed"/>
-								<xsl:call-template name ="templ_prop_SecondaryClose"/>
-								<xsl:call-template name ="templ_prop_Dot"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:choose>
-							<xsl:when test="$cMonthAccessed!=0">
-								<xsl:if test="$cYearAccessed!=0">
-									<xsl:call-template name ="templ_prop_Space"/>
-									<xsl:call-template name ="templ_prop_SecondaryOpen"/>
-									<xsl:call-template name ="FindReplaceString">
-										<xsl:with-param name="originalString" select="string($str_AccessedCap)"/>
-										<xsl:with-param name="stringToBeReplaced" select="' %1'"/>
-										<xsl:with-param name="stringReplacement" select="$prop_Space"/>
-									</xsl:call-template>
-									<xsl:value-of select="b:MonthAccessed"/>
-									<xsl:call-template name ="templ_prop_Space"/>
-									<xsl:value-of select="b:YearAccessed"/>
-									<xsl:call-template name ="templ_prop_SecondaryClose"/>
-									<xsl:call-template name ="templ_prop_Dot"/>
-								</xsl:if>
-							</xsl:when>
-							<xsl:otherwise>
+								<xsl:value-of select="b:DayAccessed"/>
 								<xsl:call-template name ="templ_prop_Space"/>
-								<xsl:call-template name ="templ_prop_SecondaryOpen"/>
+								<xsl:value-of select="b:MonthAccessed"/>
+								<xsl:call-template name ="templ_prop_Space"/>
+								<xsl:value-of select="b:YearAccessed"/>
+								<xsl:call-template name ="templ_prop_Dot"/>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name ="templ_prop_Space"/>
+							<xsl:call-template name ="FindReplaceString">
+								<xsl:with-param name="originalString" select="string($str_AccessedCap)"/>
+								<xsl:with-param name="stringToBeReplaced" select="' %1'"/>
+								<xsl:with-param name="stringReplacement" select="$prop_Space"/>
+							</xsl:call-template>
+							<xsl:value-of select="b:YearAccessed"/>
+							<xsl:call-template name ="templ_prop_Dot"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:choose>
+						<xsl:when test="$cMonthAccessed!=0">
+							<xsl:if test="$cYearAccessed!=0">
+								<xsl:call-template name ="templ_prop_Space"/>
 								<xsl:call-template name ="FindReplaceString">
 									<xsl:with-param name="originalString" select="string($str_AccessedCap)"/>
 									<xsl:with-param name="stringToBeReplaced" select="' %1'"/>
 									<xsl:with-param name="stringReplacement" select="$prop_Space"/>
 								</xsl:call-template>
+								<xsl:value-of select="b:MonthAccessed"/>
+								<xsl:call-template name ="templ_prop_Space"/>
 								<xsl:value-of select="b:YearAccessed"/>
-								<xsl:call-template name ="templ_prop_SecondaryClose"/>
 								<xsl:call-template name ="templ_prop_Dot"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:otherwise>
-				</xsl:choose>
-			</br>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name ="templ_prop_Space"/>
+							<xsl:call-template name ="FindReplaceString">
+								<xsl:with-param name="originalString" select="string($str_AccessedCap)"/>
+								<xsl:with-param name="stringToBeReplaced" select="' %1'"/>
+								<xsl:with-param name="stringReplacement" select="$prop_Space"/>
+							</xsl:call-template>
+							<xsl:value-of select="b:YearAccessed"/>
+							<xsl:call-template name ="templ_prop_Dot"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:if>
 	</xsl:template>
 
@@ -5159,11 +5129,12 @@
 		</xsl:variable>
 		<xsl:if test ="$cURL!=0">
 			<br>
-				<xsl:text>Available at:</xsl:text>
+				<xsl:text>available at:</xsl:text>
 				<xsl:call-template name ="templ_prop_Space"/>
 				<u>
 					<xsl:value-of select="b:URL"/>
 				</u>
+				<xsl:call-template name ="templ_prop_ListSeparator"/>
 			</br>
 		</xsl:if>
 	</xsl:template>
@@ -5268,10 +5239,7 @@
 						<xsl:call-template name ="BibAddParagraphAttributes"/>
 						<xsl:call-template name = "BibDisplayAuthor"/>
 						<xsl:call-template name = "BibDisplayYear"/>
-						<i>
-							<xsl:call-template name ="BibDisplayTitle"/>
-						</i>
-						<xsl:call-template name ="BibDisplayStrOnline"/>
+						<xsl:call-template name ="BibDisplayTitleJournoOrWeb"/>
 						<xsl:call-template name ="BibDisplayURL"/>
 						<xsl:call-template name ="BibDisplayAccessedDates"/>
 					</xsl:element>
@@ -5281,10 +5249,7 @@
 						<xsl:call-template name ="BibAddParagraphAttributes"/>
 						<xsl:call-template name = "BibDisplayAuthor"/>
 						<xsl:call-template name = "BibDisplayYear"/>
-						<i>
-							<xsl:call-template name ="BibDisplayTitle"/>
-						</i>
-						<xsl:call-template name ="BibDisplayStrOnline"/>
+						<xsl:call-template name ="BibDisplayTitleJournoOrWeb"/>
 						<xsl:call-template name ="BibDisplayURL"/>
 						<xsl:call-template name ="BibDisplayAccessedDates"/>
 					</xsl:element>
@@ -5296,7 +5261,7 @@
 							<xsl:with-param name ="DisplayEditorIfAuthorUnavailale" select="'true'" />
 						</xsl:call-template>
 						<xsl:call-template name = "BibDisplayYear"/>
-						<xsl:call-template name = "BibDisplayTitleJA"/>
+						<xsl:call-template name = "BibDisplayTitleJournoOrWeb"/>
 						<xsl:call-template name ="BibDisplayJournalName"/>
 						<xsl:call-template name ="BibDisplayVolumeIssueJA"/>
 						<xsl:call-template name ="BibDisplayPages"/>
