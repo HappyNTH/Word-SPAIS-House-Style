@@ -4194,7 +4194,6 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="b:Author/b:Author/b:Corporate"/>
-						<xsl:call-template name ="templ_prop_ListSeparator"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
